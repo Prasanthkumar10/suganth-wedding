@@ -537,6 +537,25 @@ section {
   color: var(--ink-soft);
   font-style: italic;
 }
+.event-location-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  color: var(--gold-d);
+  text-decoration: none;
+  vertical-align: middle;
+  transition: color .2s ease, transform .2s ease;
+}
+.event-location-link:hover {
+  color: var(--gold);
+  transform: translateY(-1px);
+}
+.event-location-icon {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
 
 /* ══════════════════════════════════════════
    COUNTDOWN
@@ -919,6 +938,26 @@ section { min-height: 100svh; min-height: 100vh; }
   font-size: 1.15rem;
 }
 
+/* Android / narrow-screen hero alignment fix */
+@media (max-width: 820px) {
+  .hero-content {
+    padding-bottom: 17vh;
+  }
+  .hero-scroll-cue {
+    bottom: 1.5vh;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+  }
+  .hero-scroll-cue .cue-text {
+    white-space: nowrap;
+    font-size: .55rem;
+    letter-spacing: .25em;
+  }
+  .hero-scroll-cue .cue-line {
+    height: 26px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1010,7 +1049,14 @@ section { min-height: 100svh; min-height: 100vh; }
     <div class="event-card">
       <p class="event-tamil-label">வரவேற்பு · Reception</p>
       <p class="event-day">Monday · 16 November 2026</p>
-      <p class="event-time">Kamala Rajan Mandapam, Ambur</p>
+      <p class="event-time">Kamala Rajan Mandapam, Ambur
+        <a class="event-location-link" href="https://maps.app.goo.gl/7yevYdnyeDNvtupy6?g_st=ic" target="_blank" rel="noopener noreferrer" aria-label="Open Kamala Rajan Mandapam in Google Maps" title="Open in Google Maps">
+          <svg class="event-location-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 21s7-6.1 7-12A7 7 0 1 0 5 9c0 5.9 7 12 7 12Z" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.7"/>
+          </svg>
+        </a>
+      </p>
     </div>
   </div>
 </section>
@@ -1253,8 +1299,10 @@ section { min-height: 100svh; min-height: 100vh; }
     // Floating petals: spawn already mid-flight via negative animation-delays,
     // so there's no empty-to-full pop-in on load and no visible synced restart later.
     var petalField = document.getElementById('petalField');
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (petalField && !reduceMotion) {
+    // Keep the petal shower enabled across mobile browsers. Do not disable it
+    // just because the device/browser reports prefers-reduced-motion; the
+    // invitation's petals are lightweight decorative elements.
+    if (petalField) {
       var PETAL_COUNT = 16;
       var PETAL_COLORS = ['var(--gold-l)', 'var(--blush)', 'rgba(251,246,236,0.92)'];
       var PETAL_VARIANTS = ['petalFallA', 'petalFallB', 'petalFallC'];
